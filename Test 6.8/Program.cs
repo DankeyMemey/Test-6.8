@@ -5,7 +5,7 @@ char[,] board = { { '#', '#', '#' }, { '#', '#', '#' }, { '#', '#', '#' } };
 int userInputX = 1;
 int userInputY = 1;
 char turn = 'X';
-char winner;
+char winner = '@';
 Boolean gameCompleted = false;
 Boolean isValid = true;
 
@@ -40,38 +40,89 @@ while (!gameCompleted)
     }
     isValid = true;
 
-    board[userInputX - 1, userInputY - 1] = turn;
+    board[userInputY - 1, userInputX - 1] = turn;
 
     if (board[0,0] == 'X' && board[0, 1] == 'X' && board[0, 2] == 'X')
     {
         winner = 'X';
+        gameCompleted = true;
     }
 
-    if (board[0, 0] == 'O' && board[0, 1] == 'O' && board[0, 2] == 'O')
+    else if (board[0, 0] == 'O' && board[0, 1] == 'O' && board[0, 2] == 'O')
     {
         winner = 'O';
+        gameCompleted = true;
     }
 
-    if (board[1, 0] == 'X' && board[1, 1] == 'X' && board[1, 2] == 'X')
+    else if (board[1, 0] == 'X' && board[1, 1] == 'X' && board[1, 2] == 'X')
     {
         winner = 'X';
+        gameCompleted = true;
     }
 
-    if (board[1, 0] == 'O' && board[1, 1] == 'O' && board[1, 2] == 'O')
+    else if (board[1, 0] == 'O' && board[1, 1] == 'O' && board[1, 2] == 'O')
     {
         winner = 'O';
+        gameCompleted = true;
     }
 
-    if (board[2, 0] == 'X' && board[2, 1] == 'X' && board[2, 2] == 'X')
+    else if (board[2, 0] == 'X' && board[2, 1] == 'X' && board[2, 2] == 'X')
     {
         winner = 'X';
+        gameCompleted = true;
     }
 
-    if (board[2, 0] == 'O' && board[2, 1] == 'O' && board[2, 2] == 'O')
+    else if (board[2, 0] == 'O' && board[2, 1] == 'O' && board[2, 2] == 'O')
     {
         winner = 'O';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 0] == 'X' && board[1, 0] == 'X' && board[2, 0] == 'X')
+    {
+        winner = 'X';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 0] == 'O' && board[1, 0] == 'O' && board[2, 0] == 'O')
+    {
+        winner = 'O';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 1] == 'X' && board[1, 1] == 'X' && board[2, 1] == 'X')
+    {
+        winner = 'X';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 1] == 'O' && board[1, 1] == 'O' && board[2, 1] == 'O')
+    {
+        winner = 'O';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 2] == 'X' && board[1, 2] == 'X' && board[2, 2] == 'X')
+    {
+        winner = 'X';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 2] == 'O' && board[1, 2] == 'O' && board[2, 2] == 'O')
+    {
+        winner = 'O';
+        gameCompleted = true;
     }
 }
+
+Console.WriteLine(" ------------");
+Console.WriteLine("| " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " |");
+Console.WriteLine(" ------------");
+Console.WriteLine("| " + board[1, 0] + " | " + board[1, 1] + " | " + board[1, 2] + " |");
+Console.WriteLine(" ------------");
+Console.WriteLine("| " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " |");
+Console.WriteLine(" ------------");
+Console.WriteLine("\nThe winner is " + winner + "!");
 
 
 
