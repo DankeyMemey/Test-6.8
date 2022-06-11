@@ -1,21 +1,75 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 // variable declaration
+Random rng = new Random();
 char[,] board = { { '#', '#', '#' }, { '#', '#', '#' }, { '#', '#', '#' } };
-int userInputX = 1;
-int userInputY = 1;
+String userInput = "";
+int userInputX = 0;
+int userInputY = 0;
+int chance = 0;
+int turns = 0;
 char turn = 'X';
+char artyI = '@';
 char winner = '@';
 Boolean gameCompleted = false;
-Boolean isValid = true;
-
+Boolean isValid = false;
+Boolean isIntX = false;
+Boolean isIntY = false;
+Boolean cpuPlayer = false;
 
 Console.WriteLine("Welcome to Simon's TicTacToe game!");
+
+while (!isValid)
+{
+    Console.WriteLine("Would you like to play with a CPU? (Yes/No)");
+    userInput = Console.ReadLine().ToLower();
+    if (userInput.Equals("yes"))
+    {
+        cpuPlayer = true;
+        isValid = true;
+    }
+
+    else if (!(userInput.Equals("no")))
+    {
+        isValid = false;
+    }
+
+    else
+        isValid = true;
+}
+
+isValid = false;
+
+while (!isValid && cpuPlayer == true)
+{
+    Console.WriteLine("What shape should the AI play as (X/O)");
+    userInput = Console.ReadLine().ToUpper();
+
+    if (userInput.Equals("X"))
+    {
+        artyI = 'X';
+        isValid = true;
+    }
+
+    else if (userInput.Equals("O"))
+    {
+        artyI = 'O';
+        isValid = true;
+    }
+
+    else
+        Console.WriteLine("Invalid Input");
+}
+
+
+isValid = false;
+
 
 //loops until the game is over
 while (!gameCompleted)
 {
     //Printing the current board and whos turn is it
+    turn++;
     Console.WriteLine("It is " + turn + "'s turn!");
     Console.WriteLine(" ------------");
     Console.WriteLine("| " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " |");
@@ -26,22 +80,55 @@ while (!gameCompleted)
     Console.WriteLine(" ------------");
     gameCompleted = false;
 
-    //Getting the users turn
-    while (isValid)
+    //Getting the users turn and a metric f**kton of user validation
+    while (!isValid && (turn != artyI))
     {
         Console.WriteLine("Please input an x coordinate (1-3)");
-        userInputX = Convert.ToInt32(Console.ReadLine());
-
-
+        isIntX = int.TryParse(Console.ReadLine(), out userInputX);
+;
         Console.WriteLine("Please input an y coordinate (1-3)");
-        userInputY = Convert.ToInt32(Console.ReadLine());
-        
-        isValid = false;
+        isIntY = int.TryParse(Console.ReadLine(), out userInputY);
+
+        if (isIntX && isIntY)
+        {
+            if ((userInputY == 1 || userInputY == 2 || userInputY == 3) && (userInputX == 1 || userInputX == 2 || userInputX == 3))
+            {
+                isValid = true;
+            }
+        }
+
+        if (isValid && board[userInputY - 1, userInputX - 1] == '#')
+        {
+            board[userInputY - 1, userInputX - 1] = turn;
+        }
+
+        else
+            Console.WriteLine("\nIncorrect Input!\n");
+
     }
-    isValid = true;
+    isValid = false;
 
-    board[userInputY - 1, userInputX - 1] = turn;
+    if (turn == artyI)
+    {
+        if (turns == 1)
+        {
+            chance = rng.Next(0, 11);
+            if (chance <= 7)
+            {
+                board[1, 1] = artyI;
+            }
 
+            else
+            {
+                board[rng.Next(0, 3), rng.Next(0, 3)] = artyI;
+            }
+        }
+
+
+        
+    }
+
+    //Mr. Metric F**ckton makes a return for checking if there is a winner for way too many lines
     if (board[0,0] == 'X' && board[0, 1] == 'X' && board[0, 2] == 'X')
     {
         winner = 'X';
@@ -113,6 +200,36 @@ while (!gameCompleted)
         winner = 'O';
         gameCompleted = true;
     }
+
+    else if (board[0, 0] == 'X' && board[1, 1] == 'X' && board[2, 2] == 'X')
+    {
+        winner = 'X';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 0] == 'O' && board[1, 1] == 'O' && board[2, 2] == 'O')
+    {
+        winner = 'O';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 2] == 'X' && board[1, 1] == 'X' && board[2, 0] == 'X')
+    {
+        winner = 'X';
+        gameCompleted = true;
+    }
+
+    else if (board[0, 2] == 'O' && board[1, 1] == 'O' && board[2, 0] == 'O')
+    {
+        winner = 'O';
+        gameCompleted = true;
+    }
+
+    if (turn == 'X')
+        turn = 'O';
+    else
+        turn = 'X';
+
 }
 
 Console.WriteLine(" ------------");
@@ -122,7 +239,7 @@ Console.WriteLine("| " + board[1, 0] + " | " + board[1, 1] + " | " + board[1, 2]
 Console.WriteLine(" ------------");
 Console.WriteLine("| " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " |");
 Console.WriteLine(" ------------");
-Console.WriteLine("\nThe winner is " + winner + "!");
+Console.WriteLine("\nIn " + turns + " turns. The winner is " + winner + "!");
 
 
 
