@@ -6,8 +6,9 @@ char[,] board = { { '#', '#', '#' }, { '#', '#', '#' }, { '#', '#', '#' } };
 String userInput = "";
 int userInputX = 0;
 int userInputY = 0;
-int chance = 0;
-int turns = 0;
+int chance1 = 0;
+int chance2 = 0;
+int turns = 1;
 char turn = 'X';
 char artyI = '@';
 char winner = '@';
@@ -17,7 +18,7 @@ Boolean isIntX = false;
 Boolean isIntY = false;
 Boolean cpuPlayer = false;
 
-Console.WriteLine("Welcome to Simon's TicTacToe game!");
+Console.WriteLine("Welcome to Simon's TicTacToe game!\n");
 
 while (!isValid)
 {
@@ -42,7 +43,7 @@ isValid = false;
 
 while (!isValid && cpuPlayer == true)
 {
-    Console.WriteLine("What shape should the AI play as (X/O)");
+    Console.WriteLine("\nWhat shape should the AI play as (X/O)");
     userInput = Console.ReadLine().ToUpper();
 
     if (userInput.Equals("X"))
@@ -69,8 +70,7 @@ isValid = false;
 while (!gameCompleted)
 {
     //Printing the current board and whos turn is it
-    turn++;
-    Console.WriteLine("It is " + turn + "'s turn!");
+    Console.WriteLine("\nIt is " + turn + "'s turn!\n" + turns + " turns have elapsed.\n");
     Console.WriteLine(" ------------");
     Console.WriteLine("| " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " |");
     Console.WriteLine(" ------------");
@@ -78,7 +78,6 @@ while (!gameCompleted)
     Console.WriteLine(" ------------");
     Console.WriteLine("| " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " |");
     Console.WriteLine(" ------------");
-    gameCompleted = false;
 
     //Getting the users turn and a metric f**kton of user validation
     while (!isValid && (turn != artyI))
@@ -100,10 +99,14 @@ while (!gameCompleted)
         if (isValid && board[userInputY - 1, userInputX - 1] == '#')
         {
             board[userInputY - 1, userInputX - 1] = turn;
+            turns++;
         }
 
         else
+        {
             Console.WriteLine("\nIncorrect Input!\n");
+            isValid = false;
+        }
 
     }
     isValid = false;
@@ -112,20 +115,53 @@ while (!gameCompleted)
     {
         if (turns == 1)
         {
-            chance = rng.Next(0, 11);
-            if (chance <= 7)
+            if (rng.Next(0, 11) <= 7)
             {
                 board[1, 1] = artyI;
+                turns++;
             }
 
             else
             {
                 board[rng.Next(0, 3), rng.Next(0, 3)] = artyI;
+                turns++;
             }
         }
 
+        else if (turns == 2)
+        {
+            if ((rng.Next(0, 21) > 2) && (board[1, 1] == '#'))
+            {
+                board[1, 1] = artyI;
+                turns++;
+            }
 
-        
+            else
+            {
+                while (!isValid)
+                {
+                    chance1 = rng.Next(0, 3);
+                    chance2 = rng.Next(0, 3);
+                    if (board[chance1, chance2] == '#')
+                    {
+                        board[chance1, chance2] = artyI;
+                        isValid = true;
+                        turns++;
+                    }
+                }
+                isValid = false;
+            }
+        }
+
+        else if (turns == 3 || turns == 4)
+        {
+            Console.WriteLine("In development");
+            turns++;
+        }
+
+        else
+            turns++;
+
     }
 
     //Mr. Metric F**ckton makes a return for checking if there is a winner for way too many lines
@@ -230,6 +266,12 @@ while (!gameCompleted)
     else
         turn = 'X';
 
+    if (turns == 10)
+    {
+        winner = 'T';
+        break;
+    }
+
 }
 
 Console.WriteLine(" ------------");
@@ -239,7 +281,9 @@ Console.WriteLine("| " + board[1, 0] + " | " + board[1, 1] + " | " + board[1, 2]
 Console.WriteLine(" ------------");
 Console.WriteLine("| " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " |");
 Console.WriteLine(" ------------");
-Console.WriteLine("\nIn " + turns + " turns. The winner is " + winner + "!");
 
+if (winner == 'T')
+    Console.WriteLine("\nThere is no winner. :(");   
 
-
+else
+    Console.WriteLine("\nIn " + turns + " turns. The winner is " + winner + "!");
