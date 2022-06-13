@@ -70,7 +70,7 @@ isValid = false;
 while (!gameCompleted)
 {
     //Printing the current board and whos turn is it
-    Console.WriteLine("\nIt is " + turn + "'s turn!\n" + turns + " turns have elapsed.\n");
+    Console.WriteLine("\nIt is " + turn + "'s turn!\n" + (turns - 1) + " turns have elapsed.\n");
     Console.WriteLine(" ------------");
     Console.WriteLine("| " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " |");
     Console.WriteLine(" ------------");
@@ -153,15 +153,57 @@ while (!gameCompleted)
             }
         }
 
-        else if (turns == 3 || turns == 4)
+        else if (turns == 3)
         {
-            Console.WriteLine("In development");
+            while (!isValid)
+            {
+                chance1 = rng.Next(0, 3);
+                chance2 = rng.Next(0, 3);
+                if (board[chance1, chance2] == '#')
+                {
+                    board[chance1, chance2] = artyI;
+                    isValid = true;
+                    turns++;
+                }
+            }
+            isValid = false;
+        }
+
+        else if (turns == 4)
+        {
             turns++;
         }
 
-        else
+        else if (turns == 5)
+        {
             turns++;
+        }
 
+        else if (turns == 6)
+        {
+            turns++;
+        }
+
+        else if (turns == 7)
+        {
+            turns++;
+        }
+
+        else if (turns == 8)
+        {
+            turns++;
+        }
+
+        else if (turns == 9)
+        {
+            for (int i = 0; i <= 8; i++)
+            {
+                if (board[i / 3, i % 3] == '#')
+                {
+                    board[i / 3, i % 3] = artyI;
+                }
+            }
+        }
     }
 
     //Mr. Metric F**ckton makes a return for checking if there is a winner for way too many lines
